@@ -15,4 +15,15 @@ __PACKAGE__->set_primary_key("id");
 
 __PACKAGE__->has_many("role_links", "My::Schema::Result::UsersRoles", "user_id");
 
+sub hasRole {
+	my $self = shift;
+	my $roleName = shift;
+
+	foreach my $link ($self->role_links) {
+		return 1 if($link->role->name eq $roleName);
+	}
+
+	return 0;
+}
+
 1;
