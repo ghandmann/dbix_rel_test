@@ -14,6 +14,7 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 __PACKAGE__->has_many("role_links", "My::Schema::Result::UsersRoles", "user_id");
+__PACKAGE__->many_to_many("roles", "role_links", "role");
 
 sub hasRole {
 	my $self = shift;
@@ -30,9 +31,22 @@ sub addRole {
 	my $self = shift;
 	my $roleName = shift;
 
+	warn "addRole() for user '" . $self->name . "' with roleName '" . $roleName;
+
 	my $roleObj = $self->result_source->schema->resultset("Roles")->find($roleName, { key => "name" });
 
 	$self->create_related("role_links", { role_id => $roleObj->id });
+}
+
+sub addRoleManyToMany {
+	my $self = shift;
+	my $roleName = shift;
+
+	warn "addRoleManyToMany() for user '" . $self->name . "' with roleName '" . $roleName;
+	
+	my $roleObj = $self->result_source->schema->resultset("Roles")->find($roleName, { key => "name" });
+
+	$self->add_to_roles($roleObj);
 }
 
 1;

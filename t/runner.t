@@ -32,7 +32,13 @@ my $userA = Users->find(1, { prefetch => { role_links => "role" } });
 is($userA->name, "UserA", "UserA is named UserA");
 ok($userA->hasRole("Admin"), "UserA is Admin");
 ok(!$userA->hasRole("Support"), "UserA is NOT Support");
+
 $userA->addRole("Support");
 ok($userA->hasRole("Support"), "UserA is now Support");
+
+ok(!$userA->hasRole("User"), "UserA is NOT User");
+$userA->addRoleManyToMany("User");
+ok($userA->hasRole("User"), "UserA is User");
+
 
 done_testing();
