@@ -11,6 +11,8 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("id");
 
+__PACKAGE__->add_unique_constraint("name", ["name"]);
+
 __PACKAGE__->has_many("user_links", "My::Schema::Result::UsersRoles", "role_id");
 
 1;

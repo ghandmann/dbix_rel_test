@@ -26,4 +26,13 @@ sub hasRole {
 	return 0;
 }
 
+sub addRole {
+	my $self = shift;
+	my $roleName = shift;
+
+	my $roleObj = $self->result_source->schema->resultset("Roles")->find($roleName, { key => "name" });
+
+	$self->create_related("role_links", { role_id => $roleObj->id });
+}
+
 1;
